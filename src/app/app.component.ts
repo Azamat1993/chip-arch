@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ZoomService } from 'src/modules/services/zoom.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'chip-arch';
+
+  constructor(private readonly zoomService: ZoomService) {
+    zoomService.currentZoom$.subscribe(a => {
+      console.log('the a is', a);
+    })
+  }
 }
