@@ -13,9 +13,7 @@ export class ActiveItemService {
 
     constructor(
         private readonly clickService: ClickService,
-    ) {
-        
-    }
+    ) {}
 
     public setActiveItem(item: Activable) {
         this.activeItemInterval$.next(item);
