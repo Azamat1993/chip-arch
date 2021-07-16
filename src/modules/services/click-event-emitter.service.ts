@@ -9,7 +9,7 @@ export class ClickEventEmitterService {
     private readonly mouseUpInterval$ = new Subject<MouseEvent>();
 
     public readonly mouseDown$ = this.mouseDownInternal$.asObservable();
-    public readonly mouseUp = this.mouseUpInterval$.asObservable();
+    public readonly mouseUp$ = this.mouseUpInterval$.asObservable();
 
     constructor() {
         fromEvent(window, 'mousedown').subscribe((event: MouseEvent) => {
