@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ReplaySubject } from "rxjs";
 import { distinctUntilChanged, map, startWith } from 'rxjs/operators';
+import { SettingsService } from "./settings.service";
 import { ZoomEventEmitterService } from "./zoom-event-emitter.service";
 
 @Injectable({
@@ -12,18 +13,23 @@ export class ZoomService {
 
     private currentZoomValue = this.lowerBound;
 
-    private readonly currentZoomInterval$ = new ReplaySubject<number>(1);
+    constructor(
+        private readonly zoomEventEmitter: ZoomEventEmitterService,
+        private readonly settingsService: SettingsService,
+    ) {
+        this.settingsService.listenToSetting(settings => settings.zoom).subscribe((zoom: number) => {
+            this.currentZoomValue = zoom;
+        });
 
-    public readonly currentZoom$ = this.currentZoomInterval$.asObservable();
-
-    constructor(private readonly zoomEventEmitter: ZoomEventEmitterService) {
         this.zoomEventEmitter.zoomEvent$.pipe(
             map(this.getStep.bind(this)),
             map(this.getZoomFromStep.bind(this)),
             startWith(this.lowerBound),
             distinctUntilChanged(),
         ).subscribe((zoom: number) => {
-            this.currentZoomInterval$.next(zoom);
+            this.settingsService.updateSettings({
+                zoom,
+            });
         });
     }
 
