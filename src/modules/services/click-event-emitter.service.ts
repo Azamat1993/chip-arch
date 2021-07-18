@@ -1,15 +1,37 @@
 import { Injectable } from "@angular/core";
-import { fromEvent, Observable } from "rxjs";
+import { fromEvent, merge, Subject } from "rxjs";
+import { distinctUntilChanged, filter, map, switchMap } from "rxjs/operators";
+import { EventRegistrerService } from "./event-registrer.service";
 
 @Injectable({
     providedIn: 'root',
 })
 export class ClickEventEmitterService {
-    public mouseDown$: Observable<MouseEvent>;
-    public mouseUp$: Observable<MouseEvent>;
+    private readonly mouseDownInternal$ = new Subject<MouseEvent>();
+    private readonly mouseUpInternal$ = new Subject<MouseEvent>();
 
-    constructor() {
-        this.mouseDown$ = fromEvent<MouseEvent>(window, 'mousedown');
-        this.mouseUp$ = fromEvent<MouseEvent>(window, 'mouseup');
+    public readonly mouseDown$ = this.mouseDownInternal$.asObservable();
+    public readonly mouseUp$ = this.mouseUpInternal$.asObservable();
+
+    constructor(
+        private readonly eventRegistrer: EventRegistrerService,
+    ) {
+        this.eventRegistrer.register(element => {
+            return fromEvent(element, 'mousedown').pipe(
+                map(event => ({
+                    subject: this.mouseDownInternal$,
+                    event,
+                }))
+            );
+        });
+
+        this.eventRegistrer.register(element => {
+            return fromEvent(element, 'mouseup').pipe(
+                map(event => ({
+                    subject: this.mouseUpInternal$,
+                    event,
+                }))
+            );
+        });
     }
 }

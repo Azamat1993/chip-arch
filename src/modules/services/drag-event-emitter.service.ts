@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
 import { fromEvent, Subject } from "rxjs";
-import { switchMap, takeUntil, tap } from "rxjs/operators";
+import { map, switchMap, takeUntil, tap } from "rxjs/operators";
 import { Point } from "../models/point";
 import { ClickEventEmitterService } from "./click-event-emitter.service";
+import { EventRegistrerService } from "./event-registrer.service";
 
 @Injectable({
     providedIn: 'root',
@@ -16,19 +17,25 @@ export class DragEventEmitterService {
     public readonly dragEnd$ = this.dragEndInternal$.asObservable();
     public readonly drag$ = this.dragInternal$.asObservable();
     constructor(
-        private clickEventEmitter: ClickEventEmitterService,
+        private readonly clickEventEmitter: ClickEventEmitterService,
+        private readonly eventRegistrer: EventRegistrerService,
     ) {
-        this.clickEventEmitter.mouseDown$.pipe(
-            tap(event => this.dragStartInternal$.next(event)),
-            switchMap(() => {
-                return fromEvent(window, 'mousemove').pipe(
-                    takeUntil(this.clickEventEmitter.mouseUp$.pipe(
-                        tap(event => this.dragEndInternal$.next(event)),
-                    ))
-                );
-            }),
-        ).subscribe((event: DragEvent) => {
-            this.dragInternal$.next(event);
-        });
+        this.eventRegistrer.register(element =>
+            this.clickEventEmitter.mouseDown$.pipe(
+                tap(event => this.dragStartInternal$.next(event)),
+                switchMap(() => {
+                    return fromEvent(element, 'mousemove').pipe(
+                        takeUntil(this.clickEventEmitter.mouseUp$.pipe(
+                            tap(event => this.dragEndInternal$.next(event)),
+                        )),
+                        takeUntil(fromEvent(element, 'mouseleave')),
+                    );
+                }),
+                map(event => ({
+                    subject: this.dragInternal$,
+                    event,
+                }))
+            )
+        );
     }
 }
