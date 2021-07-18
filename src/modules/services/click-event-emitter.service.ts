@@ -1,22 +1,15 @@
 import { Injectable } from "@angular/core";
-import { fromEvent, Subject } from "rxjs";
+import { fromEvent, Observable } from "rxjs";
 
 @Injectable({
     providedIn: 'root',
 })
 export class ClickEventEmitterService {
-    private readonly mouseDownInternal$ = new Subject<MouseEvent>();
-    private readonly mouseUpInterval$ = new Subject<MouseEvent>();
-
-    public readonly mouseDown$ = this.mouseDownInternal$.asObservable();
-    public readonly mouseUp$ = this.mouseUpInterval$.asObservable();
+    public mouseDown$: Observable<MouseEvent>;
+    public mouseUp$: Observable<MouseEvent>;
 
     constructor() {
-        fromEvent(window, 'mousedown').subscribe((event: MouseEvent) => {
-            this.mouseDownInternal$.next(event);
-        });
-        fromEvent(window, 'mouseup').subscribe((event: MouseEvent) => {
-            this.mouseUpInterval$.next(event);
-        });
+        this.mouseDown$ = fromEvent<MouseEvent>(window, 'mousedown');
+        this.mouseUp$ = fromEvent<MouseEvent>(window, 'mouseup');
     }
 }

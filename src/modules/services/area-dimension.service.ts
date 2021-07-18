@@ -11,9 +11,7 @@ export class AreaDimensionService {
 
     public readonly currentDimension$ = this.currentDimensionInternal$.asObservable();
 
-    constructor(
-        private readonly dragService: DragService,
-    ) {
-        
+    public setCurrentDimension(point: Point) {
+        this.currentDimensionInternal$.next(point);
     }
 }
