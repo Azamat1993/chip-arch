@@ -9,11 +9,11 @@ export class PositionService<T extends MouseEvent> {
         return new Point(this.getX(event), this.getY(event));
     }
 
-    private getX(event: T) {
+    public getX(event: T) {
         return event.offsetX;
     }
 
-    private getY(event: T) {
+    public getY(event: T) {
         return event.offsetY;
     }
 }
