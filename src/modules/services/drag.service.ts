@@ -9,11 +9,19 @@ import { PositionService } from "./position.service";
     providedIn: 'root',
 })
 export class DragService {
+    public dragStartPos$: Observable<Point>;
+    public dragEndPos$: Observable<Point>;
     public dragPos$: Observable<Point>;
     constructor(
         private readonly dragEventEmitter: DragEventEmitterService,
         private readonly positionService: PositionService<MouseEvent>,
     ) {
+        this.dragStartPos$ = this.dragEventEmitter.dragStart$.pipe(
+            map(this.positionService.getPosFromEvent),
+        );
+        this.dragEndPos$ = this.dragEventEmitter.dragEnd$.pipe(
+            map(this.positionService.getPosFromEvent),
+        );
         this.dragPos$ = this.dragEventEmitter.drag$.pipe(
             map(this.positionService.getPosFromEvent),
         );
