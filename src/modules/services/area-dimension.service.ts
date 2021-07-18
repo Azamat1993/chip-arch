@@ -2,28 +2,31 @@ import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
 import { Point } from "../models/point";
 import { DragService } from "./drag.service";
+import { SettingsService } from "./settings.service";
 
 @Injectable({
     providedIn: 'root',
 })
 export class AreaDimensionService {
-    private readonly currentDimensionInternal$ = new Subject<Point>();
-
-    public readonly currentDimension$ = this.currentDimensionInternal$.asObservable();
-
     private currentDimension: Point;
 
-    constructor() {
-        this.currentDimension$.subscribe(pos => this.currentDimension = pos);
+    constructor(
+        private readonly settingsService: SettingsService,
+    ) {
+        this.settingsService.listenToSetting(settings => settings.dimension).subscribe((dimension: Point) => {
+            this.currentDimension = dimension;
+        })
     }
 
     public setCurrentDimension(point: Point) {
-        this.currentDimensionInternal$.next(point);
+        this.settingsService.updateSettings({
+            dimension: point,
+        });
     }
 
     public addToCurrentDimension(point: Point) {
-        this.currentDimensionInternal$.next(
-            this.currentDimension.add(point),
-        );
+        this.settingsService.updateSettings({
+            dimension: this.currentDimension ? this.currentDimension.add(point) : point,
+        });
     }
 }
