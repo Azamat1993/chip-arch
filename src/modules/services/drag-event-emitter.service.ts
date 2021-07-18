@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { fromEvent, Subject } from "rxjs";
+import { fromEvent, merge, Subject } from "rxjs";
 import { map, switchMap, takeUntil, tap } from "rxjs/operators";
 import { Point } from "../models/point";
 import { ClickEventEmitterService } from "./click-event-emitter.service";
@@ -25,10 +25,14 @@ export class DragEventEmitterService {
                 tap(event => this.dragStartInternal$.next(event)),
                 switchMap(() => {
                     return fromEvent(element, 'mousemove').pipe(
-                        takeUntil(this.clickEventEmitter.mouseUp$.pipe(
-                            tap(event => this.dragEndInternal$.next(event)),
-                        )),
-                        takeUntil(fromEvent(element, 'mouseleave')),
+                        takeUntil(
+                            merge(
+                                this.clickEventEmitter.mouseUp$,
+                                fromEvent(element, 'mouseleave')
+                            ).pipe(
+                                tap(event => this.dragEndInternal$.next(event))
+                            ),
+                        ),
                     );
                 }),
                 map(event => ({
