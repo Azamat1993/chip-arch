@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { AreaDimensionService } from 'src/modules/services/area-dimension.service';
 import { DragEventEmitterService } from 'src/modules/services/drag-event-emitter.service';
 import { DragService } from 'src/modules/services/drag.service';
+import { ToolService } from 'src/modules/services/tool.service';
 import { ZoomService } from 'src/modules/services/zoom.service';
 
 @Component({
@@ -11,9 +13,14 @@ import { ZoomService } from 'src/modules/services/zoom.service';
 export class AppComponent {
   title = 'chip-arch';
 
-  constructor(private readonly dragService: DragService) {
-    dragService.dragPos$.subscribe(a => {
-      console.log('the a is', a);
-    })
+  constructor(
+    private readonly dragService: DragService,
+    private readonly areaDimensionService: AreaDimensionService,
+    private readonly toolService: ToolService,
+    private readonly zoomService: ZoomService,
+  ) {
+    areaDimensionService.currentDimension$.subscribe((a) => {
+      console.log('the aaaa', a);
+    });
   }
 }
