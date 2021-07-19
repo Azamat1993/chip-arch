@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { Point } from "../models/point";
 import { DragService } from "./drag.service";
 import { SettingsService } from "./settings.service";
@@ -8,12 +8,15 @@ import { SettingsService } from "./settings.service";
     providedIn: 'root',
 })
 export class AreaDimensionService {
+    public currentDimension$: Observable<Point>;
+
     private currentDimension: Point;
 
     constructor(
         private readonly settingsService: SettingsService,
     ) {
-        this.settingsService.listenToSetting(settings => settings.dimension).subscribe((dimension: Point) => {
+        this.currentDimension$ = this.settingsService.listenToSetting(settings => settings.dimension);
+        this.currentDimension$.subscribe((dimension: Point) => {
             this.currentDimension = dimension;
         })
     }

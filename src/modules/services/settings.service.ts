@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
-import { ReplaySubject } from "rxjs";
+import { Observable, ReplaySubject } from "rxjs";
 import { distinctUntilChanged, map } from "rxjs/operators";
 import { Settings } from "../interfaces/settings";
 import { ValueOf } from "../interfaces/value-of";
 
-type ListenSettingFn = (settings: Settings) => ValueOf<Settings>;
+type ListenSettingFn<R> = (settings: Settings) => R;
 @Injectable({
     providedIn: 'root',
 })
@@ -29,7 +29,7 @@ export class SettingsService {
         });
     }
 
-    public listenToSetting(getFn: ListenSettingFn) {
+    public listenToSetting<R>(getFn: ListenSettingFn<R>): Observable<R> {
         return this.settings$.pipe(
             map(getFn),
             distinctUntilChanged(),
