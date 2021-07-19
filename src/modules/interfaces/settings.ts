@@ -1,5 +1,6 @@
 import { Point } from "../models/point";
 import { Activable } from "./activeable";
+import { Tool } from "./tool";
 
 export interface Settings {
     element: HTMLElement,
@@ -9,4 +10,5 @@ export interface Settings {
     zoom: number;
     activeItem: Activable;
     dimension: Point;
+    tool: Tool;
 }

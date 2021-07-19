@@ -14,4 +14,12 @@ export class HandToolService implements Tool {
     public onDrag(newPoint: Point) {
         this.areaDimensionService.addToCurrentDimension(newPoint);
     }
+
+    public onClick() {
+        // do nothing
+    }
+
+    public onRelease() {
+        // do nothing
+    }
 }
