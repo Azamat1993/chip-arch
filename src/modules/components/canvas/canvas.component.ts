@@ -8,6 +8,7 @@ import { UpdatesService } from "src/modules/services/updates.service";
 @Component({
     selector: 'app-canvas',
     templateUrl: './canvas.component.html',
+    styleUrls: ['./canvas.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CanvasComponent implements AfterViewInit {

@@ -9,11 +9,12 @@ import { GenericTool } from "./generic-tool.service";
     providedIn: 'root',
 })
 export class ArrowToolService extends GenericTool implements Tool {
-    public readonly toolName: TOOLS.ARROW;
+    public readonly toolName = TOOLS.ARROW;
 
     constructor(
         toolMapService: ToolMapService,
     ) {
-        super(toolMapService);
+        super();
+        toolMapService.register(this.toolName, this);
     }
 }

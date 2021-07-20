@@ -16,7 +16,8 @@ export class HandToolService extends GenericTool implements Tool {
         private readonly areaDimensionService: AreaDimensionService,
         toolMapService: ToolMapService,
     ) {
-        super(toolMapService);
+        super();
+        toolMapService.register(this.toolName, this);
     }
 
     public onDrag(newPoint: Point) {
