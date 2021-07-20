@@ -20,7 +20,6 @@ export class CanvasComponent implements AfterViewInit {
         private readonly updatesService: UpdatesService,
         private readonly settingsService: SettingsService,
         private readonly canvasService: CanvasService,
-        private readonly clickService: ClickService,
     ) {}
 
     public ngAfterViewInit(): void {
