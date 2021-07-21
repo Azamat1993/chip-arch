@@ -12,7 +12,7 @@ export class LocalStorageService {
         try {
             localStorage.setItem(fullKey, this.serialize<T>(item));
         } catch (e) {
-            console.error('error occured while setting item with key', key);
+            console.error('error occured while setting item with key', key, e);
         }
     }
 
@@ -23,7 +23,7 @@ export class LocalStorageService {
             const result = localStorage.getItem(fullKey);
             return this.deserialize<R>(result);
         } catch(e) {
-            console.error('error occured while getting item with key', key);
+            console.error('error occured while getting item with key', key, e);
         }
 
         return null;
