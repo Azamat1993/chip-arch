@@ -23,5 +23,7 @@ export class CanvasService implements Renderable {
             context,
         } = this.settings;
         context.clearRect(0, 0, width, height);
+        context.fillStyle = 'black';
+        context.fillRect(Math.floor(width / 2) - this.settings.dimension.x, Math.floor(height / 2) - this.settings.dimension.y, 10, 10);
     }
 }
