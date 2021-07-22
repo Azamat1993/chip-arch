@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable, ReplaySubject } from "rxjs";
 import { distinctUntilChanged, map, tap } from "rxjs/operators";
-import { TOOLS } from "../enums/tools";
 import { Settings } from "../interfaces/settings";
 import { Point } from "../models/point";
 import { LocalStorageService } from "./local-storage.service";
