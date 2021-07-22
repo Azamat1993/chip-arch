@@ -36,7 +36,7 @@ export class CanvasComponent implements AfterViewInit {
         });
 
         setTimeout(() => {
-            this.updatesService.triggetUpdate();
+            this.updatesService.detectChanges();
         }, 1000);
     }
 }

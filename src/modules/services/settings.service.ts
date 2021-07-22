@@ -4,6 +4,7 @@ import { distinctUntilChanged, map, tap } from "rxjs/operators";
 import { Settings } from "../interfaces/settings";
 import { Point } from "../models/point";
 import { LocalStorageService } from "./local-storage.service";
+import { UpdatesService } from "./updates.service";
 
 type ListenSettingFn<R> = (settings: Settings) => R;
 @Injectable({
@@ -18,10 +19,12 @@ export class SettingsService {
 
     constructor(
         private readonly localStorageService: LocalStorageService,
+        private readonly updatesService: UpdatesService,
     ) {
         this.setInitialSettings();
         this.settings$.pipe(
-            tap(settings => this.localStorageService.set(this.localStorageKey, this.getSettingsToStore(settings))),
+            tap(settings => this.setSettingsToStorage(settings)),
+            tap(_ => this.updatesService.detectChanges()),
         ).subscribe(settings => this.settings = settings);
     }
 
@@ -41,6 +44,10 @@ export class SettingsService {
             map(getFn),
             distinctUntilChanged(),
         );
+    }
+
+    private setSettingsToStorage(settings: Settings) {
+        this.localStorageService.set(this.localStorageKey, this.getSettingsToStore(settings))
     }
 
     private setInitialSettings() {

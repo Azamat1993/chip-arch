@@ -8,7 +8,7 @@ export class UpdatesService {
     private readonly updatesInternal$ = new Subject<void>();
     public readonly updates$ = this.updatesInternal$.asObservable();
 
-    public triggetUpdate() {
+    public detectChanges() {
         this.updatesInternal$.next();
     }
 }
