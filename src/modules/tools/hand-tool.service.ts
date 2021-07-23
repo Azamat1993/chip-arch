@@ -20,7 +20,15 @@ export class HandToolService extends GenericTool implements Tool {
         toolMapService.register(this.toolName, this);
     }
 
-    public onDrag(newPoint: Point) {
-        this.areaDimensionService.addToCurrentDimension(newPoint);
+    public onClick(point: Point) {
+        
+    }
+
+    public onDrag(point: Point) {
+        this.areaDimensionService.addToCurrentDimension(point);
+    }
+
+    public onRelease(point: Point) {
+        
     }
 }
