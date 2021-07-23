@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { TOOLS } from "../enums/tools";
 import { Tool } from "../interfaces/tool";
 import { Point } from "../models/point";
+import { ActiveItemService } from "../services/active-item.service";
 import { AreaDimensionService } from "../services/area-dimension.service";
 import { ToolMapService } from "../services/tool-map.service";
 import { GenericTool } from "./generic-tool.service";
@@ -14,18 +15,19 @@ export class HandToolService extends GenericTool implements Tool {
 
     constructor(
         private readonly areaDimensionService: AreaDimensionService,
+        activeItemService: ActiveItemService,
         toolMapService: ToolMapService,
     ) {
-        super();
+        super(activeItemService);
         toolMapService.register(this.toolName, this);
     }
 
-    public onClick(point: Point) {
-        
-    }
-
     public onDrag(point: Point) {
-        this.areaDimensionService.addToCurrentDimension(point);
+        if (this.activeItem) {
+            console.log('the active item is', this.activeItem);
+        } else {
+            this.areaDimensionService.addToCurrentDimension(point);
+        }
     }
 
     public onRelease(point: Point) {

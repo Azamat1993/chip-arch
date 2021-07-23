@@ -10,28 +10,21 @@ import { SettingsService } from "./settings.service";
 })
 export class ActiveItemService {
     public current$: Observable<Activable>;
-
-    private firstActiveItem: Activable = null;
-
     constructor(
         private readonly settingsService: SettingsService,
         private readonly clickService: ClickService,
     ) {
         this.current$ = this.settingsService.listenToSetting(settings => settings.activeItem);
-        this.clickService.clickPos$.pipe(
-            switchMap(() => this.clickService.releasePos$),
-        ).subscribe(() => {
-            console.log('the first item is', this.firstActiveItem);
-            if (this.firstActiveItem) {
-                this.settingsService.updateSettings({
-                    activeItem: this.firstActiveItem,
-                });
-            }
-            this.firstActiveItem = null;
+        this.clickService.releasePos$.subscribe(() => {
+            this.settingsService.updateSettings({
+                activeItem: null,
+            });
         });
     }
     
     public setCurrentItem(item: Activable) {
-        this.firstActiveItem = item;
+        this.settingsService.updateSettings({
+            activeItem: item,
+        });
     }
 }
