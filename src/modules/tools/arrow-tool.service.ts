@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { TOOLS } from "../enums/tools";
 import { Tool } from "../interfaces/tool";
 import { Point } from "../models/point";
+import { ActiveItemService } from "../services/active-item.service";
 import { ToolMapService } from "../services/tool-map.service";
 import { GenericTool } from "./generic-tool.service";
 
@@ -13,8 +14,17 @@ export class ArrowToolService extends GenericTool implements Tool {
 
     constructor(
         toolMapService: ToolMapService,
+        activeItemService: ActiveItemService,
     ) {
-        super();
+        super(activeItemService);
         toolMapService.register(this.toolName, this);
+    }
+    
+    public onClick(point: Point) {
+
+    }
+
+    public onRelease(point: Point) {
+        
     }
 }

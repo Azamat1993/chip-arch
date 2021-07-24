@@ -27,4 +27,8 @@ export class ActiveItemService {
             activeItem: item,
         });
     }
+
+    public moveCurrentItem(item: Activable) {
+        // @todo
+    }
 }

@@ -14,8 +14,8 @@ export class HandToolService extends GenericTool implements Tool {
     public readonly toolName = TOOLS.HAND;
 
     constructor(
-        private readonly areaDimensionService: AreaDimensionService,
-        activeItemService: ActiveItemService,
+        protected readonly areaDimensionService: AreaDimensionService,
+        protected readonly activeItemService: ActiveItemService,
         toolMapService: ToolMapService,
     ) {
         super(activeItemService);
@@ -24,13 +24,9 @@ export class HandToolService extends GenericTool implements Tool {
 
     public onDrag(point: Point) {
         if (this.activeItem) {
-            console.log('the active item is', this.activeItem);
+            this.activeItemService.moveCurrentItem(point);
         } else {
             this.areaDimensionService.addToCurrentDimension(point);
         }
-    }
-
-    public onRelease(point: Point) {
-        
     }
 }
