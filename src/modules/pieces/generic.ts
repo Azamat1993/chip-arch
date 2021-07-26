@@ -25,6 +25,8 @@ export abstract class Generic<T> {
             parent = parent.parent;
         }
         
+        this.parent = parent;
+
         return parent;
     }
 
