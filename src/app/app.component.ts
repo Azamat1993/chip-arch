@@ -17,10 +17,7 @@ export class AppComponent {
   title = 'chip-arch';
 
   constructor(
-    private readonly dragService: DragService,
-    private readonly areaDimensionService: AreaDimensionService,
     private readonly toolService: ToolService,
-    private readonly zoomService: ZoomService,
     private readonly toolMapService: ToolMapService,
   ) {
     toolService.setTool(toolMapService.get(TOOLS.HAND));

@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { NgModule } from "@angular/core";
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core";
 import { ToolsModule } from "../tools/tools.module";
 import { CanvasComponent } from "./canvas/canvas.component";
 import { CoordinatesComponent } from "./coordinates/coordinates.component";
@@ -15,6 +15,7 @@ const COMPONENTS = [
         CommonModule,
         ToolsModule,    
     ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
     declarations: COMPONENTS,
     exports: COMPONENTS,
 })
