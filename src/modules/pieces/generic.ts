@@ -10,13 +10,13 @@ export abstract class Generic<T> {
     protected defaultHeight = 50;
     protected defaultPosition = new Point(0, 0);
 
+    protected parent = this;
+
     constructor(protected readonly config: BaseConfig) {
         this.width = config.width || this.defaultWidth;
         this.height = config.height || this.defaultHeight;
         this.position = config.position ? new Point(config.position.x, config.position.y) : this.defaultPosition;
     }
-
-    protected parent = this;
 
     protected getParent(): Generic<T> {
         let parent = this.parent;

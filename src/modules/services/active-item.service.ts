@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { switchMap } from "rxjs/operators";
 import { Activable } from "../interfaces/activeable";
+import { Point } from "../models/point";
 import { ClickService } from "./click.service";
 import { SettingsService } from "./settings.service";
 
@@ -10,6 +11,9 @@ import { SettingsService } from "./settings.service";
 })
 export class ActiveItemService {
     public current$: Observable<Activable>;
+
+    private current: Activable;
+
     constructor(
         private readonly settingsService: SettingsService,
         private readonly clickService: ClickService,
@@ -20,6 +24,7 @@ export class ActiveItemService {
                 activeItem: null,
             });
         });
+        this.current$.subscribe(item => this.current = item);
     }
     
     public setCurrentItem(item: Activable) {
@@ -28,7 +33,7 @@ export class ActiveItemService {
         });
     }
 
-    public moveCurrentItem(item: Activable) {
-        // @todo
+    public moveCurrentItem(point: Point) {
+        // this.current.move(point);
     }
 }

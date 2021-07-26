@@ -30,7 +30,7 @@ export class CanvasComponent implements AfterViewInit {
             context: this.canvasRef.nativeElement.getContext('2d'),
         });
         this.updatesService.updates$.pipe(
-            debounceTime(10),
+            // debounceTime(10),
         ).subscribe(() => {
             this.canvasService.render();
         });

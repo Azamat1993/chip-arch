@@ -21,4 +21,8 @@ export class ToolMapService {
         }
         return this.tools.get(toolName);
     }
+
+    public getRegisteredTools() {
+        return Array.from(this.tools.entries());
+    }
 }

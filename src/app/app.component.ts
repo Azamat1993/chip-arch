@@ -22,11 +22,7 @@ export class AppComponent {
     private readonly toolService: ToolService,
     private readonly zoomService: ZoomService,
     private readonly toolMapService: ToolMapService,
-    private readonly handToolService: HandToolService,
   ) {
     toolService.setTool(toolMapService.get(TOOLS.HAND));
-    areaDimensionService.currentDimension$.subscribe((a) => {
-      console.log('the aaaa', a);
-    });
   }
 }
