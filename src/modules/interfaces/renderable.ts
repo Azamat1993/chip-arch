@@ -1,3 +1,5 @@
+import { BaseConfig } from "./base-config";
+
 export interface Renderable {
-    render(): void;
+    render(config?: BaseConfig): void;
 }

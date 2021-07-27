@@ -1,5 +1,7 @@
 import { BaseConfig } from "../interfaces/base-config";
+import { Renderable } from "../interfaces/renderable";
 import { Point } from "../models/point";
+import { PieceService } from "../render/piece.service";
 
 export abstract class Generic<T> {
     protected width: number;
@@ -12,7 +14,10 @@ export abstract class Generic<T> {
 
     protected parent = this;
 
-    constructor(protected readonly config: BaseConfig) {
+    constructor(
+        protected readonly config: BaseConfig,
+        protected readonly renderService: Renderable,
+    ) {
         this.width = config.width || this.defaultWidth;
         this.height = config.height || this.defaultHeight;
         this.position = config.position ? new Point(config.position.x, config.position.y) : this.defaultPosition;
@@ -28,6 +33,10 @@ export abstract class Generic<T> {
         this.parent = parent;
 
         return parent;
+    }
+
+    protected draw() {
+        this.renderService.render(this.config);
     }
 
     public abstract create<R>(config: R): T;
