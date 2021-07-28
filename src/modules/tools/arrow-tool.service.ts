@@ -21,10 +21,10 @@ export class ArrowToolService extends GenericTool implements Tool {
     }
     
     public onClick(point: Point) {
-
+        this.activeItem.click(point);
     }
 
     public onRelease(point: Point) {
-        
+        this.activeItem.release(point);
     }
 }

@@ -30,9 +30,11 @@ export abstract class Generic<T> implements Activable {
         this.clickService.clickPos$.subscribe(this.handleClick.bind(this));
     }
 
-    public move(diffPoint: Point) {
-        this.position.update(diffPoint);
-    }
+    public abstract move(diffPoint: Point): void;
+
+    public abstract click(point: Point): void;
+
+    public abstract release(point: Point): void;
 
     protected handleClick(point: Point) {
         if (this.isInside(point)) {
