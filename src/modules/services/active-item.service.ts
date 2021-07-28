@@ -34,6 +34,6 @@ export class ActiveItemService {
     }
 
     public moveCurrentItem(point: Point) {
-        // this.current.move(point);
+        this.current.move(point);
     }
 }

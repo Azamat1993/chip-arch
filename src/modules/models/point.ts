@@ -9,4 +9,9 @@ export class Point {
             this.y + point.y,
         );
     }
+
+    public update(point: Point) {
+        this.x += point.x;
+        this.y += point.y;
+    }
 }
