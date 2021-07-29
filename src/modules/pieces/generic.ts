@@ -1,12 +1,17 @@
+import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 import { Activable } from "../interfaces/activeable";
 import { BaseConfig } from "../interfaces/base-config";
 import { Renderable } from "../interfaces/renderable";
 import { Point } from "../models/point";
-import { PieceService } from "../render/piece.service";
 import { ActiveItemService } from "../services/active-item.service";
 import { ClickService } from "../services/click.service";
 
 export abstract class Generic<T> implements Activable {
+    protected readonly moveInternal$ = new Subject<Point>();
+
+    public readonly move$ = this.moveInternal$.asObservable();
+
     protected width: number;
     protected height: number;
     protected position: Point;
@@ -15,7 +20,10 @@ export abstract class Generic<T> implements Activable {
     protected defaultHeight = 50;
     protected defaultPosition = new Point(0, 0);
 
-    protected parent = this;
+    protected parent: Generic<T>;
+
+    protected readonly destroy$ = new Subject<void>();
+    protected readonly parentChanged$ = new Subject<Generic<T>>();
 
     constructor(
         protected readonly config: BaseConfig,
@@ -26,8 +34,23 @@ export abstract class Generic<T> implements Activable {
         this.width = config.width || this.defaultWidth;
         this.height = config.height || this.defaultHeight;
         this.position = config.position ? new Point(config.position.x, config.position.y) : this.defaultPosition;
-    
-        this.clickService.clickPos$.subscribe(this.handleClick.bind(this));
+        this.parent = this;
+
+        this.clickService.clickPos$.pipe(
+            takeUntil(this.destroy$),
+        ).subscribe(this.handleClick.bind(this));
+
+        this.move$.pipe(
+            takeUntil(this.destroy$)
+        ).subscribe((point: Point) => {
+            this.activeItemService.moveCurrentItem(point);
+        });
+
+        this.parentChanged$.pipe(
+            takeUntil(this.destroy$),
+        ).subscribe((parent: Generic<T>) => {
+            this.parent = parent;
+        });
     }
 
     public move(diffPoint: Point): void {
@@ -35,16 +58,21 @@ export abstract class Generic<T> implements Activable {
             const offsetPoint = this.position.add(diffPoint);
             
             if (this.isInside(offsetPoint, this.getParent())) {
-                this.activeItemService.moveCurrentItem(diffPoint);
+                this.moveInternal$.next(offsetPoint);
             }
         } else {
-            this.activeItemService.moveCurrentItem(diffPoint);
+            this.moveInternal$.next(diffPoint);
         }
     }
 
     public abstract click(point: Point): void;
 
     public abstract release(point: Point): void;
+
+    public destroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
 
     protected handleClick(point: Point) {
         if (this.isInside(point, this)) {
@@ -54,6 +82,19 @@ export abstract class Generic<T> implements Activable {
 
     protected hasParent() {
         return this.getParent() !== this.parent;
+    }
+
+    protected setParent(parent: Generic<T>) {
+        this.parentChanged$.next(parent);
+
+        if (parent !== this.parent) {
+            this.parent.move$.pipe(
+                takeUntil(this.destroy$),
+                takeUntil(this.parentChanged$),
+            ).subscribe((point: Point) => {
+                this.moveInternal$.next(point);
+            });
+        }
     }
 
     protected getParent(): Generic<T> {
