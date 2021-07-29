@@ -30,16 +30,30 @@ export abstract class Generic<T> implements Activable {
         this.clickService.clickPos$.subscribe(this.handleClick.bind(this));
     }
 
-    public abstract move(diffPoint: Point): void;
+    public move(diffPoint: Point): void {
+        if (this.hasParent()) {
+            const offsetPoint = this.position.add(diffPoint);
+            
+            if (this.isInside(offsetPoint, this.getParent())) {
+                this.activeItemService.moveCurrentItem(diffPoint);
+            }
+        } else {
+            this.activeItemService.moveCurrentItem(diffPoint);
+        }
+    }
 
     public abstract click(point: Point): void;
 
     public abstract release(point: Point): void;
 
     protected handleClick(point: Point) {
-        if (this.isInside(point)) {
+        if (this.isInside(point, this)) {
             this.activeItemService.setCurrentItem(this);
         }
+    }
+
+    protected hasParent() {
+        return this.getParent() !== this.parent;
     }
 
     protected getParent(): Generic<T> {
@@ -60,10 +74,10 @@ export abstract class Generic<T> implements Activable {
 
     public abstract create<R>(config: R): T;
 
-    protected isInside(point: Point): boolean {
-        return point.x >= this.position.x
-            && point.x <= (this.position.x + this.width)
-            && point.y >= this.position.y
-            && point.y <= (this.position.y + this.height);
+    protected isInside(point: Point, boundary: Generic<any>): boolean {
+        return point.x >= boundary.position.x
+            && point.x <= (boundary.position.x + boundary.width)
+            && point.y >= boundary.position.y
+            && point.y <= (boundary.position.y + boundary.height);
     }
 }
