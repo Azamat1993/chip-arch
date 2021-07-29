@@ -9,6 +9,8 @@ export class UpdatesService {
     public readonly updates$ = this.updatesInternal$.asObservable();
 
     public detectChanges() {
-        this.updatesInternal$.next();
+        requestAnimationFrame(() => {
+            this.updatesInternal$.next();
+        });
     }
 }

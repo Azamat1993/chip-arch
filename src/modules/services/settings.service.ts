@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable, ReplaySubject } from "rxjs";
-import { distinctUntilChanged, map, tap } from "rxjs/operators";
+import { delay, distinctUntilChanged, map, tap } from "rxjs/operators";
 import { Settings } from "../interfaces/settings";
 import { Point } from "../models/point";
 import { LocalStorageService } from "./local-storage.service";
@@ -24,8 +24,8 @@ export class SettingsService {
         this.setInitialSettings();
         this.settings$.pipe(
             tap(settings => this.setSettingsToStorage(settings)),
-            tap(_ => this.updatesService.detectChanges()),
-        ).subscribe(settings => this.settings = settings);
+            tap(settings => this.settings = settings),
+        ).subscribe(() => this.updatesService.detectChanges());
     }
 
     public setSettings(settings: Settings) {

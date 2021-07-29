@@ -10,7 +10,7 @@ import { ZoomEventEmitterService } from "./zoom-event-emitter.service";
 export class ZoomService {
     public currentZoom$: Observable<number>;
 
-    private readonly lowerBound = 0;
+    private readonly lowerBound = 1;
     private readonly upperBound = 10;
 
     private currentZoomValue = this.lowerBound;
