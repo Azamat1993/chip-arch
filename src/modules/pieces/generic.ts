@@ -40,6 +40,10 @@ export abstract class Generic<T> implements Activable {
             takeUntil(this.destroy$),
         ).subscribe(this.handleClick.bind(this));
 
+        this.clickService.releasePos$.pipe(
+            takeUntil(this.destroy$),
+        ).subscribe(this.handleRelease.bind(this));
+
         this.move$.pipe(
             takeUntil(this.destroy$)
         ).subscribe((point: Point) => {
@@ -77,6 +81,17 @@ export abstract class Generic<T> implements Activable {
     protected handleClick(point: Point) {
         if (this.isInside(point, this)) {
             this.activeItemService.setCurrentItem(this);
+            if (this.click) {
+                this.click(point);
+            }
+        }
+    }
+
+    protected handleRelease(point: Point) {
+        if (this.isInside(point, this)) {
+            if (this.release) {
+                this.release(point);
+            }
         }
     }
 
