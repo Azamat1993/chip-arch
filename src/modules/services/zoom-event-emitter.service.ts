@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { fromEvent, Observable, Subject } from "rxjs";
-import { debounceTime, map } from "rxjs/operators";
+import { debounceTime, map, tap } from "rxjs/operators";
 import { EventRegistrerService } from "./event-registrer.service";
 
 @Injectable({
@@ -15,6 +15,7 @@ export class ZoomEventEmitterService {
     ) {
         this.eventRegistrer.register(element =>
             fromEvent<WheelEvent>(element, 'wheel').pipe(
+                tap((event: WheelEvent) => event.preventDefault()),
                 debounceTime(100),
                 map((event: WheelEvent) => event.deltaY),
                 map(event => ({
