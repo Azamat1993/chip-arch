@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { BaseConfig } from "../interfaces/base-config";
 import { SettingsService } from "../services/settings.service";
+import { UpdatesService } from "../services/updates.service";
 import { ZoomService } from "../services/zoom.service";
 import { GenericRender } from "./generic-render";
 
@@ -13,9 +14,10 @@ export class CanvasService extends GenericRender {
 
     constructor(
         settingsService: SettingsService,
+        updatesService: UpdatesService,
         private readonly zoomService: ZoomService,
     ) {
-        super(settingsService);
+        super(settingsService, updatesService);
 
         this.zoomService.currentZoom$.subscribe((zoom: number) => {
             this.step = this.initialStep * zoom;

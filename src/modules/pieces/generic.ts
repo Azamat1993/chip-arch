@@ -66,7 +66,7 @@ export abstract class Generic<T> implements Activable {
             this.parent = parent;
         });
 
-        this.updatesService.updates$.pipe(
+        this.updatesService.delayedUpdates$.pipe(
             takeUntil(this.destroy$),
         ).subscribe(() => {
             this.render();

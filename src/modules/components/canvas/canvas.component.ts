@@ -17,7 +17,6 @@ export class CanvasComponent implements AfterViewInit {
     public ctx: CanvasRenderingContext2D;
 
     constructor(
-        private readonly updatesService: UpdatesService,
         private readonly settingsService: SettingsService,
         private readonly canvasService: CanvasService,
     ) {}
@@ -29,12 +28,5 @@ export class CanvasComponent implements AfterViewInit {
             height: this.canvasRef.nativeElement.offsetHeight,
             context: this.canvasRef.nativeElement.getContext('2d'),
         });
-        this.updatesService.updates$.pipe(
-            debounceTime(10),
-        ).subscribe(() => {
-            this.canvasService.render();
-        });
-
-        this.updatesService.detectChanges();
     }
 }
