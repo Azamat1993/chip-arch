@@ -2,10 +2,12 @@ import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { Activable } from "../interfaces/activeable";
 import { BaseConfig } from "../interfaces/base-config";
-import { Renderable } from "../interfaces/renderable";
+import { Settings } from "../interfaces/settings";
 import { Point } from "../models/point";
 import { ActiveItemService } from "../services/active-item.service";
 import { ClickService } from "../services/click.service";
+import { SettingsService } from "../services/settings.service";
+import { UpdatesService } from "../services/updates.service";
 
 export abstract class Generic<T> implements Activable {
     protected readonly moveInternal$ = new Subject<Point>();
@@ -21,20 +23,28 @@ export abstract class Generic<T> implements Activable {
     protected defaultPosition = new Point(0, 0);
 
     protected parent: Generic<T>;
+    protected settings: Settings;
 
     protected readonly destroy$ = new Subject<void>();
     protected readonly parentChanged$ = new Subject<Generic<T>>();
 
     constructor(
         protected readonly config: BaseConfig,
-        protected readonly renderService: Renderable,
         protected readonly clickService: ClickService,
         protected readonly activeItemService: ActiveItemService,
+        protected readonly updatesService: UpdatesService,
+        protected readonly settingsService: SettingsService,
     ) {
         this.width = config.width || this.defaultWidth;
         this.height = config.height || this.defaultHeight;
         this.position = config.position ? new Point(config.position.x, config.position.y) : this.defaultPosition;
         this.parent = this;
+
+        this.settingsService.settings$.pipe(
+            takeUntil(this.destroy$),
+        ).subscribe((settings: Settings) => {
+            this.settings = settings;
+        });
 
         this.clickService.clickPos$.pipe(
             takeUntil(this.destroy$),
@@ -54,6 +64,12 @@ export abstract class Generic<T> implements Activable {
             takeUntil(this.destroy$),
         ).subscribe((parent: Generic<T>) => {
             this.parent = parent;
+        });
+
+        this.updatesService.updates$.pipe(
+            takeUntil(this.destroy$),
+        ).subscribe(() => {
+            this.render();
         });
     }
 
@@ -76,6 +92,13 @@ export abstract class Generic<T> implements Activable {
     public destroy() {
         this.destroy$.next();
         this.destroy$.complete();
+    }
+
+    protected render() {
+        const { context } = this.settings;
+
+        context.fillStyle = 'blue';
+        context.fillRect(this.position.x, this.position.y, this.width, this.height);
     }
 
     protected handleClick(point: Point) {
@@ -122,10 +145,6 @@ export abstract class Generic<T> implements Activable {
         this.parent = parent;
 
         return parent;
-    }
-
-    protected draw() {
-        this.renderService.render(this.config);
     }
 
     public abstract create<R>(config: R): T;
