@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { AreaDimensionService } from "src/modules/services/area-dimension.service";
 
 @Component({

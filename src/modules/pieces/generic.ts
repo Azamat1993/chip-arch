@@ -146,9 +146,6 @@ export abstract class Generic<T> implements Activable {
 
         return parent;
     }
-
-    public abstract create<R>(config: R): T;
-
     protected isInside(point: Point, boundary: Generic<any>): boolean {
         return point.x >= boundary.position.x
             && point.x <= (boundary.position.x + boundary.width)
