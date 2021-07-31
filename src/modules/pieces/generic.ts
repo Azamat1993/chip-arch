@@ -122,10 +122,10 @@ export abstract class Generic<T> implements Activable {
         return this.getParent() !== this.parent;
     }
 
-    protected setParent(parent: Generic<T>) {
+    public setParent(parent: Generic<T>) {
+        const parentsDiffer = parent !== this.parent;
         this.parentChanged$.next(parent);
-
-        if (parent !== this.parent) {
+        if (parentsDiffer) {
             this.parent.move$.pipe(
                 takeUntil(this.destroy$),
                 takeUntil(this.parentChanged$),

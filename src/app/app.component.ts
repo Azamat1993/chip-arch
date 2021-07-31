@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { TOOLS } from 'src/modules/enums/tools';
 import { GateFactoryService } from 'src/modules/factories/gate-factory.service';
+import { Point } from 'src/modules/models/point';
 import { GenericGate } from 'src/modules/pieces/generic-gate';
 import { AreaDimensionService } from 'src/modules/services/area-dimension.service';
 import { DragEventEmitterService } from 'src/modules/services/drag-event-emitter.service';
@@ -24,9 +25,17 @@ export class AppComponent {
     private readonly gateFactoryService: GateFactoryService,
   ) {
     toolService.setTool(toolMapService.get(TOOLS.HAND));
-    gateFactoryService.create({
+    const gate1 = gateFactoryService.create({
       width: 100,
       height: 50,
     }, GenericGate);
+
+    const gate2 = gateFactoryService.create({
+      position: new Point(200, 200),
+      width: 100,
+      height: 50,
+    }, GenericGate);
+
+    gate2.setParent(gate1);
   }
 }
