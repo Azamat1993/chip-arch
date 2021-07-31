@@ -14,7 +14,7 @@ export abstract class GenericRender implements Renderable {
             this.settings = settings;
         });
 
-        this.updatesService.updates$.subscribe(() => {
+        this.updatesService.updatesForCanvas$.subscribe(() => {
             this.render();
         });
     }

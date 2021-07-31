@@ -66,7 +66,7 @@ export abstract class Generic<T> implements Activable {
             this.parent = parent;
         });
 
-        this.updatesService.delayedUpdates$.pipe(
+        this.updatesService.updates$.pipe(
             takeUntil(this.destroy$),
         ).subscribe(() => {
             this.render();
@@ -123,15 +123,16 @@ export abstract class Generic<T> implements Activable {
     }
 
     public setParent(parent: Generic<T>) {
-        if (parent !== this.parent) {
-            parent.move$.pipe(
+        const parentsDiffer = parent !== this.parent;
+        this.parentChanged$.next(parent);
+        if (parentsDiffer) {
+            this.parent.move$.pipe(
                 takeUntil(this.destroy$),
                 takeUntil(this.parentChanged$),
             ).subscribe((point: Point) => {
                 this.moveInternal$.next(point);
             });
         }
-        this.parentChanged$.next(parent);
     }
 
     protected getParent(): Generic<T> {

@@ -1,16 +1,19 @@
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
-import { delay } from "rxjs/operators";
+import { shareReplay, tap } from "rxjs/operators";
 
 @Injectable({
     providedIn: 'root',
 })
 export class UpdatesService {
     private readonly updatesInternal$ = new Subject<void>();
-    public readonly updates$ = this.updatesInternal$.asObservable();
-    public readonly delayedUpdates$ = this.updates$.pipe(
-        delay(0),
+    private readonly updatesForCanvasInternal$ = new Subject<void>();
+
+    public readonly updates$ = this.updatesInternal$.asObservable().pipe(
+        tap(() => this.updatesForCanvasInternal$.next()),
+        shareReplay(1),
     );
+    public readonly updatesForCanvas$ = this.updatesForCanvasInternal$.asObservable();
 
     public detectChanges() {
         requestAnimationFrame(() => {
