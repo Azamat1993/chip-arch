@@ -57,7 +57,7 @@ export abstract class Generic<T> implements Activable {
         this.move$.pipe(
             takeUntil(this.destroy$)
         ).subscribe((point: Point) => {
-            this.activeItemService.moveCurrentItem(point);
+            this.position.update(point);
         });
 
         this.parentChanged$.pipe(

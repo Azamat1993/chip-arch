@@ -91,6 +91,7 @@ export class SettingsService {
             tool: true,
             element: true,
             context: true,
+            activeItem: true,
         };
         const result = {};
 
