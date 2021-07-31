@@ -32,7 +32,7 @@ export class AppComponent {
 
     const gate2 = gateFactoryService.create({
       position: new Point(200, 200),
-      width: 100,
+      width: 50,
       height: 50,
     }, GenericGate);
 
