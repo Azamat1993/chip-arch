@@ -123,16 +123,15 @@ export abstract class Generic<T> implements Activable {
     }
 
     public setParent(parent: Generic<T>) {
-        const parentsDiffer = parent !== this.parent;
-        this.parentChanged$.next(parent);
-        if (parentsDiffer) {
-            this.parent.move$.pipe(
+        if (parent !== this.parent) {
+            parent.move$.pipe(
                 takeUntil(this.destroy$),
                 takeUntil(this.parentChanged$),
             ).subscribe((point: Point) => {
                 this.moveInternal$.next(point);
             });
         }
+        this.parentChanged$.next(parent);
     }
 
     protected getParent(): Generic<T> {
