@@ -34,21 +34,33 @@ export class CanvasService extends GenericRender {
         const centerX = (Math.floor(width / 2) - dimension.x);
         const centerY = (Math.floor(height / 2) - dimension.y);
 
-
         let left = 0.5 - Math.ceil(width / this.step) * this.step;
         let top = 0.5 - Math.ceil(height / this.step) * this.step;
         let right = 2 * width;
         let bottom = 2 * height;
-        context.clearRect(left, top, right - left, bottom - top);
+        context.clearRect(0, 0, width, height);
         context.beginPath();
-        for (let x = left; x < right; x += this.step) {
+
+        for (let x = centerX; x >= 0; x -= this.step) {
             context.moveTo(x, top);
             context.lineTo(x, bottom);
         }
-        for (let y = top; y < bottom; y += this.step) {
+
+        for(let x = centerX + this.step; x < right; x += this.step) {
+            context.moveTo(x, top);
+            context.lineTo(x, bottom);
+        }
+
+        for (let y = centerY; y < bottom; y += this.step) {
             context.moveTo(left, y);
             context.lineTo(right, y);
         }
+
+        for(let y = centerY - this.step; y >= 0; y -= this.step) {
+            context.moveTo(left, y);
+            context.lineTo(right, y);
+        }
+
         context.strokeStyle = "#888";
         context.stroke();
     }
