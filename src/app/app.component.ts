@@ -36,6 +36,14 @@ export class AppComponent {
       height: 50,
     }, GenericGate);
 
+    const gate3 = gateFactoryService.create({
+      position: new Point(400, 400),
+      width: 10,
+      height: 10,
+    }, GenericGate);
+
     gate2.setParent(gate1);
+
+    gate3.setParent(gate2);
   }
 }

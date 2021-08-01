@@ -29,7 +29,12 @@ export class CanvasService extends GenericRender {
     }
 
     private drawGrid() {
-        const { width, height, context } = this.settings;
+        const { width, height, context, dimension } = this.settings;
+
+        const centerX = (Math.floor(width / 2) - dimension.x);
+        const centerY = (Math.floor(height / 2) - dimension.y);
+
+
         let left = 0.5 - Math.ceil(width / this.step) * this.step;
         let top = 0.5 - Math.ceil(height / this.step) * this.step;
         let right = 2 * width;
