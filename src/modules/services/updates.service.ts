@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
-import { shareReplay, tap } from "rxjs/operators";
+import { debounceTime, shareReplay, tap } from "rxjs/operators";
 
 @Injectable({
     providedIn: 'root',
@@ -10,6 +10,7 @@ export class UpdatesService {
     private readonly updatesForCanvasInternal$ = new Subject<void>();
 
     public readonly updates$ = this.updatesInternal$.asObservable().pipe(
+        debounceTime(10),
         tap(() => this.updatesForCanvasInternal$.next()),
         shareReplay(1),
     );
