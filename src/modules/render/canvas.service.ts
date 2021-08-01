@@ -34,10 +34,12 @@ export class CanvasService extends GenericRender {
         const centerX = (Math.floor(width / 2) - dimension.x);
         const centerY = (Math.floor(height / 2) - dimension.y);
 
-        let left = 0.5 - Math.ceil(width / this.step) * this.step;
-        let top = 0.5 - Math.ceil(height / this.step) * this.step;
-        let right = 2 * width;
-        let bottom = 2 * height;
+        const left = 0.5 - Math.ceil(width / this.step) * this.step;
+        const top = 0.5 - Math.ceil(height / this.step) * this.step;
+
+        const right = width;
+        const bottom = height;
+
         context.clearRect(0, 0, width, height);
         context.beginPath();
 
