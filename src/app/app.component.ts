@@ -24,26 +24,13 @@ export class AppComponent {
     private readonly toolMapService: ToolMapService,
     private readonly gateFactoryService: GateFactoryService,
   ) {
-    toolService.setTool(toolMapService.get(TOOLS.HAND));
-    const gate1 = gateFactoryService.create({
+    this.toolService.setTool(this.toolMapService.get(TOOLS.HAND));
+  }
+
+  public createGate() {
+    this.gateFactoryService.create({
       width: 100,
-      height: 50,
+      height: 100,
     }, GenericGate);
-
-    const gate2 = gateFactoryService.create({
-      position: new Point(200, 200),
-      width: 50,
-      height: 50,
-    }, GenericGate);
-
-    const gate3 = gateFactoryService.create({
-      position: new Point(400, 400),
-      width: 10,
-      height: 10,
-    }, GenericGate);
-
-    gate2.setParent(gate1);
-
-    gate3.setParent(gate2);
   }
 }

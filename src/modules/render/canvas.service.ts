@@ -9,7 +9,7 @@ import { GenericRender } from "./generic-render";
     providedIn: 'root',
 })
 export class CanvasService extends GenericRender {
-    private readonly initialStep = 10;
+    private readonly initialStep = 15;
     private step = this.initialStep;
 
     constructor(

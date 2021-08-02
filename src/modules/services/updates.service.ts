@@ -11,10 +11,17 @@ export class UpdatesService {
 
     public readonly updates$ = this.updatesInternal$.asObservable().pipe(
         debounceTime(10),
-        tap(() => this.updatesForCanvasInternal$.next()),
         shareReplay(1),
     );
-    public readonly updatesForCanvas$ = this.updatesForCanvasInternal$.asObservable();
+    public readonly updatesForCanvas$ = this.updatesForCanvasInternal$.asObservable().pipe(
+        shareReplay(1),
+    );
+
+    constructor() {
+        this.updates$.subscribe(() => {
+            this.updatesForCanvasInternal$.next();
+        });
+    }
 
     public detectChanges() {
         requestAnimationFrame(() => {
