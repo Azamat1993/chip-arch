@@ -18,7 +18,7 @@ export class ToolbarComponent implements OnInit {
     ) {}
 
     public ngOnInit() {
-        this.tools = this.toolMapService.getRegisteredTools();
+        this.tools = this.toolMapService.getRegisteredItems();
     }
 
     public clickTool(tool: Tool) {
