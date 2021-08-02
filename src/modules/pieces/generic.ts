@@ -148,7 +148,7 @@ export abstract class Generic<T> implements Activable {
         return parent;
     }
 
-    protected isInside(point: Point, boundary: Generic<any>): boolean {
+    protected isInside(point: Point, boundary: Generic<T>): boolean {
         const { zoom } = this.settings;
         const { offsetx, offsety } = this.getOffsetDimension(this.position);
         return point.x >= (offsetx)
