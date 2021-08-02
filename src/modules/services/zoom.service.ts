@@ -10,8 +10,10 @@ import { ZoomEventEmitterService } from "./zoom-event-emitter.service";
 export class ZoomService {
     public currentZoom$: Observable<number>;
 
+    private readonly step = 0.2;
+
     private readonly lowerBound = 1;
-    private readonly upperBound = 10;
+    private readonly upperBound = 3;
 
     private currentZoomValue = this.lowerBound;
 
@@ -51,6 +53,6 @@ export class ZoomService {
     }
 
     private getStep(delta: number) {
-        return delta > 0 ? -1 : 1;
+        return (delta > 0 ? -1 : 1) * this.step;
     }
 }

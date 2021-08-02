@@ -95,11 +95,11 @@ export abstract class Generic<T> implements Activable {
     }
 
     protected render() {
-        const { context } = this.settings;
+        const { context, zoom } = this.settings;
         const { offsetx, offsety } = this.getOffsetDimension(this.position);
 
         context.fillStyle = 'blue';
-        context.fillRect(offsetx, offsety, this.width, this.height);
+        context.fillRect(offsetx, offsety, this.width * zoom, this.height * zoom);
     }
 
     protected handleClick(point: Point) {
@@ -149,11 +149,12 @@ export abstract class Generic<T> implements Activable {
     }
 
     protected isInside(point: Point, boundary: Generic<any>): boolean {
+        const { zoom } = this.settings;
         const { offsetx, offsety } = this.getOffsetDimension(this.position);
         return point.x >= (offsetx)
-            && point.x <= (offsetx + boundary.width)
+            && point.x <= (offsetx + (boundary.width * zoom))
             && point.y >= (offsety)
-            && point.y <= (offsety + boundary.height);
+            && point.y <= (offsety + (boundary.height * zoom));
     }
 
     protected getOffsetDimension(point: Point) {
