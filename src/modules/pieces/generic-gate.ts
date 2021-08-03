@@ -1,7 +1,11 @@
+import { PIECE_TYPE } from "../enums/piece-type";
 import { Point } from "../models/point";
 import { Generic } from "./generic";
 
-export class GenericGate<T> extends Generic<T> {
+// @todo make it abstract
+export  class GenericGate<T> extends Generic<T> {
+    protected readonly type = PIECE_TYPE.GATE;
+
     public click(point: Point) {
 
     }

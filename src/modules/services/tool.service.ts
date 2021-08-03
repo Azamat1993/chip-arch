@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { delay } from "rxjs/operators";
 import { Tool } from "../interfaces/tool";
 import { Point } from "../models/point";
 import { ClickService } from "./click.service";

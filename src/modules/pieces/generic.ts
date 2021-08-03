@@ -1,5 +1,6 @@
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
+import { PIECE_TYPE } from "../enums/piece-type";
 import { Activable } from "../interfaces/activeable";
 import { BaseConfig } from "../interfaces/base-config";
 import { Settings } from "../interfaces/settings";
@@ -9,7 +10,11 @@ import { ClickService } from "../services/click.service";
 import { SettingsService } from "../services/settings.service";
 import { UpdatesService } from "../services/updates.service";
 
+
+
 export abstract class Generic<T> implements Activable {
+    protected readonly abstract type: PIECE_TYPE;
+
     protected readonly moveInternal$ = new Subject<Point>();
 
     public readonly move$ = this.moveInternal$.asObservable();
@@ -104,9 +109,13 @@ export abstract class Generic<T> implements Activable {
 
     protected handleClick(point: Point) {
         if (this.isInside(point, this)) {
-            this.activeItemService.setCurrentItem(this);
-            if (this.click) {
-                this.click(point);
+            if (this.activeItemService.isSame(this)) {
+                this.activeItemService.setCurrentItem(null);
+            } else {
+                this.activeItemService.setCurrentItem(this);
+                if (this.click) {
+                    this.click(point);
+                }
             }
         }
     }

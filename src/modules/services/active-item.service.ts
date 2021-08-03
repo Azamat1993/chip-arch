@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { switchMap } from "rxjs/operators";
+import { shareReplay, switchMap } from "rxjs/operators";
 import { Activable } from "../interfaces/activeable";
 import { Point } from "../models/point";
 import { ClickService } from "./click.service";
@@ -16,14 +16,10 @@ export class ActiveItemService {
 
     constructor(
         private readonly settingsService: SettingsService,
-        private readonly clickService: ClickService,
     ) {
-        this.current$ = this.settingsService.listenToSetting(settings => settings.activeItem);
-        this.clickService.releasePos$.subscribe(() => {
-            this.settingsService.updateSettings({
-                activeItem: null,
-            });
-        });
+        this.current$ = this.settingsService.listenToSetting(settings => settings.activeItem).pipe(
+            shareReplay(1),
+        );
         this.current$.subscribe(item => this.current = item);
     }
     
@@ -35,5 +31,9 @@ export class ActiveItemService {
 
     public moveCurrentItem(point: Point) {
         this.current.move(point);
+    }
+
+    public isSame(item: Activable) {
+        return item === this.current;
     }
 }
