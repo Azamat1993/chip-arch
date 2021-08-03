@@ -11,4 +11,5 @@ export interface Settings {
     activeItem: Activable;
     dimension: Point;
     tool: Tool;
+    step: number;
 }

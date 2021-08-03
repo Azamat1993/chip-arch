@@ -28,6 +28,10 @@ export class SettingsService {
         ).subscribe(() => this.updatesService.detectChanges());
     }
 
+    public resetSettings() {
+        this.setSettings(this.getDefaultSettings());
+    }
+
     public setSettings(settings: Settings) {
         this.settingsInternal$.next(settings);
     }
@@ -70,20 +74,12 @@ export class SettingsService {
             activeItem: null,
             dimension: new Point(0, 0),
             tool: null,
+            step: 15,
         };
     }
 
     private getSettingsFromStore(): Partial<Settings> {
-        const settings = this.localStorageService.get<Settings>(this.localStorageKey);
-        let dimension = null;
-
-        if (settings.dimension) {
-            dimension = new Point(settings.dimension.x, settings.dimension.y);
-        }
-        return {
-            ...settings,
-            dimension,
-        };
+        return this.localStorageService.get<Settings>(this.localStorageKey);
     }
 
     private getSettingsToStore(settings: Settings): Partial<Settings> {

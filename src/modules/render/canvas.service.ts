@@ -9,8 +9,7 @@ import { GenericRender } from "./generic-render";
     providedIn: 'root',
 })
 export class CanvasService extends GenericRender {
-    private readonly initialStep = 15;
-    private step = this.initialStep;
+    private step = this.settings?.step || 15;
 
     constructor(
         settingsService: SettingsService,
@@ -20,7 +19,7 @@ export class CanvasService extends GenericRender {
         super(settingsService, updatesService);
 
         this.zoomService.currentZoom$.subscribe((zoom: number) => {
-            this.step = this.initialStep * zoom;
+            this.step = this.settings.step * zoom;
         });
     }
 
