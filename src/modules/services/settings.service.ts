@@ -79,7 +79,16 @@ export class SettingsService {
     }
 
     private getSettingsFromStore(): Partial<Settings> {
-        return this.localStorageService.get<Settings>(this.localStorageKey);
+        const settings = this.localStorageService.get<Settings>(this.localStorageKey);
+
+        if (settings) {
+            if (settings.dimension) {
+                settings.dimension = new Point(settings.dimension.x, settings.dimension.y);
+            }
+
+            return settings;
+        }
+        return null;
     }
 
     private getSettingsToStore(settings: Settings): Partial<Settings> {
