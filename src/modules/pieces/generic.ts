@@ -12,7 +12,7 @@ import { UpdatesService } from "../services/updates.service";
 
 
 
-export abstract class Generic<T> implements Activable {
+export abstract class Generic<T = any> implements Activable {
     protected readonly abstract type: PIECE_TYPE;
 
     protected readonly moveInternal$ = new Subject<Point>();

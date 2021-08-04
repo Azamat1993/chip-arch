@@ -2,32 +2,29 @@ import { Injectable } from "@angular/core";
 import { Activable } from "../interfaces/activeable";
 import { BaseConfig } from "../interfaces/base-config";
 import { InSocket } from "../pieces/in-socket";
+import { OutSocket } from "../pieces/out-socket";
 import { ActiveItemService } from "../services/active-item.service";
 import { ClickService } from "../services/click.service";
 import { SettingsService } from "../services/settings.service";
 import { UpdatesService } from "../services/updates.service";
+import { GenericSocketFactory } from "./generic-socket-factory.service";
 
 @Injectable({
     providedIn: 'root',
 })
-export class SocketFactoryService {
-    protected activeItem: Activable;
-
+export class InSocketFactoryService extends GenericSocketFactory {
     constructor(
-        private readonly clickService: ClickService,
-        private readonly activeItemService: ActiveItemService,
-        private readonly updatesService: UpdatesService,
-        private readonly settingsService: SettingsService,
+        protected readonly clickService: ClickService,
+        protected readonly activeItemService: ActiveItemService,
+        protected readonly updatesService: UpdatesService,
+        protected readonly settingsService: SettingsService,
     ) {
-        this.activeItemService.current$.subscribe((item: Activable) => {
-            this.activeItem = item;
-        });
+        super(activeItemService);
     }
 
     public create(config: BaseConfig) {
-        console.log('the active item is', this.activeItem);
         if (this.activeItem) {
-            return new InSocket(
+            return new OutSocket(
                 config,
                 this.clickService,
                 this.activeItemService,
