@@ -72,6 +72,7 @@ export class SettingsService {
             context: null,
             zoom: 1,
             activeItem: null,
+            focusedItem: null,
             dimension: new Point(0, 0),
             tool: null,
             step: 15,
@@ -97,6 +98,7 @@ export class SettingsService {
             element: true,
             context: true,
             activeItem: true,
+            focusedItem: true,
         };
         const result = {};
 

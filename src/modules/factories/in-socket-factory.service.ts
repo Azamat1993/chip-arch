@@ -22,7 +22,7 @@ export class InSocketFactoryService extends GenericSocketFactory {
     }
 
     public create(config: BaseConfig) {
-        if (this.activeItem) {
+        if (this.focusedItem) {
             return new InSocket(
                 config,
                 this.clickService,

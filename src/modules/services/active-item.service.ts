@@ -11,6 +11,7 @@ import { SettingsService } from "./settings.service";
 })
 export class ActiveItemService {
     public current$: Observable<Activable>;
+    public focused$: Observable<Activable>;
 
     private current: Activable;
 
@@ -21,6 +22,14 @@ export class ActiveItemService {
         this.current$ = this.settingsService.listenToSetting(settings => settings.activeItem).pipe(
             shareReplay(1),
         );
+        this.focused$ = this.settingsService.listenToSetting(settings => settings.focusedItem).pipe(
+            shareReplay(1),
+        );
+        this.clickService.clickPos$.subscribe(() => {
+            this.settingsService.updateSettings({
+                focusedItem: null,
+            });
+        });
         this.clickService.releasePos$.subscribe(() => {
             this.settingsService.updateSettings({
                 activeItem: null,
@@ -32,6 +41,7 @@ export class ActiveItemService {
     public setCurrentItem(item: Activable) {
         this.settingsService.updateSettings({
             activeItem: item,
+            focusedItem: item,
         });
     }
 

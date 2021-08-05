@@ -9,6 +9,7 @@ export interface Settings {
     context: CanvasRenderingContext2D;
     zoom: number;
     activeItem: Activable;
+    focusedItem: Activable;
     dimension: Point;
     tool: Tool;
     step: number;

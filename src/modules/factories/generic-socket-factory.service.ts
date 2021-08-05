@@ -4,13 +4,13 @@ import { GenericSocket } from "../pieces/generic-socket";
 import { ActiveItemService } from "../services/active-item.service";
 
 export abstract class GenericSocketFactory {
-    protected activeItem: Activable;
+    protected focusedItem: Activable;
 
     constructor(
         protected readonly activeItemService: ActiveItemService,
     ) {
-        this.activeItemService.current$.subscribe((item: Activable) => {
-            this.activeItem = item;
+        this.activeItemService.focused$.subscribe((item: Activable) => {
+            this.focusedItem = item;
         });
     }
 
