@@ -109,13 +109,9 @@ export abstract class Generic<T = any> implements Activable {
 
     protected handleClick(point: Point) {
         if (this.isInside(point, this)) {
-            if (this.activeItemService.isSame(this)) {
-                this.activeItemService.setCurrentItem(null);
-            } else {
-                this.activeItemService.setCurrentItem(this);
-                if (this.click) {
-                    this.click(point);
-                }
+            this.activeItemService.setCurrentItem(this);
+            if (this.click) {
+                this.click(point);
             }
         }
     }
