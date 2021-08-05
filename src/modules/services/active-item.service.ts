@@ -16,10 +16,16 @@ export class ActiveItemService {
 
     constructor(
         private readonly settingsService: SettingsService,
+        private readonly clickService: ClickService,
     ) {
         this.current$ = this.settingsService.listenToSetting(settings => settings.activeItem).pipe(
             shareReplay(1),
         );
+        this.clickService.releasePos$.subscribe(() => {
+            this.settingsService.updateSettings({
+                activeItem: null,
+            });
+        });
         this.current$.subscribe(item => this.current = item);
     }
     
