@@ -37,9 +37,6 @@ export class AppComponent {
   }
 
   public createSocket() {
-    this.socketFactoryService.create({
-      width: 10,
-      height: 10,
-    });
+    this.socketFactoryService.create();
   }
 }

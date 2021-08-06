@@ -30,6 +30,8 @@ export abstract class Generic<T = any> implements Activable {
     protected parent: Generic<T>;
     protected settings: Settings;
 
+    protected color = 'blue';
+
     protected readonly destroy$ = new Subject<void>();
     protected readonly parentChanged$ = new Subject<Generic<T>>();
 
@@ -99,11 +101,23 @@ export abstract class Generic<T = any> implements Activable {
         this.destroy$.complete();
     }
 
+    public getWidth() {
+        return this.width;
+    }
+
+    public getHeight() {
+        return this.height;
+    }
+
+    public getPosition() {
+        return this.position;
+    }
+
     protected render() {
         const { context, zoom } = this.settings;
         const { offsetx, offsety } = this.getOffsetDimension(this.position);
 
-        context.fillStyle = 'blue';
+        context.fillStyle = this.color;
         context.fillRect(offsetx, offsety, this.width * zoom, this.height * zoom);
     }
 
