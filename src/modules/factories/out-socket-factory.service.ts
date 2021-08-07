@@ -24,7 +24,7 @@ export class InSocketFactoryService extends GenericSocketFactory {
     }
 
     public create(config: BaseConfig) {
-        if (this.focusedItem) {
+        if (this.canBeCreated()) {
             const socket = new OutSocket(
                 config,
                 this.clickService,

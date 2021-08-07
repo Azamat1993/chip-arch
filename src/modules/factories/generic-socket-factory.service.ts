@@ -1,3 +1,4 @@
+import { PIECE_TYPE } from "../enums/piece-type";
 import { Activable } from "../interfaces/activeable";
 import { BaseConfig } from "../interfaces/base-config";
 import { Generic } from "../pieces/generic";
@@ -16,4 +17,8 @@ export abstract class GenericSocketFactory {
     }
 
     public abstract create<T>(config?: BaseConfig): GenericSocket<T>;
+
+    protected canBeCreated() {
+        return this.focusedItem?.getType() === PIECE_TYPE.GATE;
+    }
 }

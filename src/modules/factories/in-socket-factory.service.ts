@@ -24,7 +24,7 @@ export class InSocketFactoryService extends GenericSocketFactory {
     }
 
     public create(config?: BaseConfig) {
-        if (this.focusedItem) {
+        if (this.canBeCreated()) {
             const parentPosition = this.focusedItem.getPosition();
 
             const socket = new InSocket(
@@ -44,8 +44,6 @@ export class InSocketFactoryService extends GenericSocketFactory {
             );
 
             socket.setParent(this.focusedItem as Generic<any>);
-
-            console.log(socket.getPosition());
 
             return socket;
         }

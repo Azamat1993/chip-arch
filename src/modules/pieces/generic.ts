@@ -113,6 +113,10 @@ export abstract class Generic<T = any> implements Activable {
         return this.position;
     }
 
+    public getType() {
+        return this.type;
+    }
+
     protected render() {
         const { context, zoom } = this.settings;
         const { offsetx, offsety } = this.getOffsetDimension(this.position);
