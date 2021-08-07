@@ -25,7 +25,7 @@ export class GateFactoryService {
     }
 
     public create<T>(config: BaseConfig, className: typeof GenericGate): GenericGate<T> {
-        return new className(
+        const result = new className(
             {
                 ...config,
                 position: new Point(
@@ -38,5 +38,9 @@ export class GateFactoryService {
             this.updatesService,
             this.settingsService,
         );
+
+        this.activeItemService.setCurrentItem(result);
+
+        return result;
     }
 }
