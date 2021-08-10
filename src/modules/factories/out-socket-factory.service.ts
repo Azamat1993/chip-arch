@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Activable } from "../interfaces/activeable";
 import { BaseConfig } from "../interfaces/base-config";
+import { Point } from "../models/point";
 import { Generic } from "../pieces/generic";
 import { InSocket } from "../pieces/in-socket";
 import { OutSocket } from "../pieces/out-socket";
@@ -25,8 +26,19 @@ export class InSocketFactoryService extends GenericSocketFactory {
 
     public create(config: BaseConfig) {
         if (this.canBeCreated()) {
+            const parentPosition = this.focusedItem.getPosition();
+            const parentWidth = this.focusedItem.getWidth();
+
             const socket = new OutSocket(
-                config,
+                {
+                    position: new Point(
+                        (parentPosition.x + parentWidth) + (config?.width || 10),
+                        parentPosition.y + (config?.height || 10),
+                    ),
+                    width: 10,
+                    height: 10,
+                    ...config
+                },
                 this.clickService,
                 this.activeItemService,
                 this.updatesService,

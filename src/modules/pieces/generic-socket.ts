@@ -12,16 +12,19 @@ export abstract class GenericSocket<T> extends Generic<T> {
 
     public move(diffPoint: Point): void {
         const { x, y } = this.moveInRange(this.getAlignedMove(diffPoint.x), this.getAlignedMove(diffPoint.y));
-        const point = new Point(x, y);
 
-        if (this.hasParent()) {
-            const offsetPoint = this.position.add(point);
-            
-            if (this.isInside(offsetPoint, this.getParent())) {
-                this.moveInternal$.next(offsetPoint);
+        if (x !== 0 || y !== 0) {
+            const point = new Point(x, y);
+
+            if (this.hasParent()) {
+                const offsetPoint = this.position.add(point);
+                
+                if (this.isInside(offsetPoint, this.getParent())) {
+                    this.moveInternal$.next(offsetPoint);
+                }
+            } else {
+                this.moveInternal$.next(point);
             }
-        } else {
-            this.moveInternal$.next(point);
         }
     }
 
