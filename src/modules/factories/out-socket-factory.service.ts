@@ -32,7 +32,7 @@ export class OutSocketFactoryService extends GenericSocketFactory {
             const socket = new OutSocket(
                 {
                     position: new Point(
-                        (parentPosition.x + parentWidth) + (config?.width || 10),
+                        parentPosition.x + parentWidth,
                         parentPosition.y + (config?.height || 10),
                     ),
                     width: 10,
