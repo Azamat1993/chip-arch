@@ -42,7 +42,7 @@ export abstract class GenericSocket<T> extends Generic<T> {
             const outerX = parentPosition.x - this.width;
             const outerWidth = parentWidth + (this.width * 2);
 
-            if (this.position.x + x >= outerX && this.position.x + x <= outerX + outerWidth) {
+            if (this.position.x + x >= outerX && this.position.x <= outerX + outerWidth) {
                 // move on x axis is in range
                 dx += x;
             }
