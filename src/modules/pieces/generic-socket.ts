@@ -40,9 +40,9 @@ export abstract class GenericSocket<T> extends Generic<T> {
             // can move horizontally
 
             const outerX = parentPosition.x - this.width;
-            const outerWidth = parentWidth + (this.width * 2);
+            const outerWidth = parentWidth + this.width;
 
-            if (this.position.x + x >= outerX && this.position.x <= outerX + outerWidth) {
+            if ((this.position.x + x) >= outerX && (this.position.x + x) <= outerX + outerWidth) {
                 // move on x axis is in range
                 dx += x;
             }
@@ -52,9 +52,9 @@ export abstract class GenericSocket<T> extends Generic<T> {
             // can move vertically
 
             const outerY = parentPosition.y - this.height;
-            const outerHeight = parentHeight + (this.height * 2);
+            const outerHeight = parentHeight + this.height;
 
-            if (this.position.y + y >= outerY && this.position.y + y <= outerY + outerHeight) {
+            if ((this.position.y + y) >= outerY && (this.position.y + y) <= outerY + outerHeight) {
                 // move on y axis is in range
                 dy += y;
             }
