@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { TOOLS } from 'src/modules/enums/tools';
 import { GateFactoryService } from 'src/modules/factories/gate-factory.service';
 import { InSocketFactoryService } from 'src/modules/factories/in-socket-factory.service';
+import { OutSocketFactoryService } from 'src/modules/factories/out-socket-factory.service';
 import { Point } from 'src/modules/models/point';
 import { GenericGate } from 'src/modules/pieces/generic-gate';
 import { AreaDimensionService } from 'src/modules/services/area-dimension.service';
@@ -24,7 +25,8 @@ export class AppComponent {
     private readonly toolService: ToolService,
     private readonly toolMapService: ToolMapService,
     private readonly gateFactoryService: GateFactoryService,
-    private readonly socketFactoryService: InSocketFactoryService,
+    private readonly inSocketFactoryService: InSocketFactoryService,
+    private readonly outSocketFactoryService: OutSocketFactoryService,
   ) {
     this.toolService.setTool(this.toolMapService.get(TOOLS.HAND));
   }
@@ -36,7 +38,11 @@ export class AppComponent {
     }, GenericGate);
   }
 
-  public createSocket() {
-    this.socketFactoryService.create();
+  public createInSocket() {
+    this.inSocketFactoryService.create();
+  }
+
+  public createOutSocket() {
+    this.outSocketFactoryService.create();
   }
 }

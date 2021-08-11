@@ -14,7 +14,7 @@ import { GenericSocketFactory } from "./generic-socket-factory.service";
 @Injectable({
     providedIn: 'root',
 })
-export class InSocketFactoryService extends GenericSocketFactory {
+export class OutSocketFactoryService extends GenericSocketFactory {
     constructor(
         protected readonly clickService: ClickService,
         protected readonly activeItemService: ActiveItemService,
@@ -24,7 +24,7 @@ export class InSocketFactoryService extends GenericSocketFactory {
         super(activeItemService);
     }
 
-    public create(config: BaseConfig) {
+    public create(config?: BaseConfig) {
         if (this.canBeCreated()) {
             const parentPosition = this.focusedItem.getPosition();
             const parentWidth = this.focusedItem.getWidth();
