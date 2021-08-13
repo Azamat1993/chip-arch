@@ -3,6 +3,7 @@ import { Activable } from "../interfaces/activeable";
 import { BaseConfig } from "../interfaces/base-config";
 import { Point } from "../models/point";
 import { Generic } from "../pieces/generic";
+import { GenericGate } from "../pieces/generic-gate";
 import { InSocket } from "../pieces/in-socket";
 import { OutSocket } from "../pieces/out-socket";
 import { ActiveItemService } from "../services/active-item.service";
@@ -45,7 +46,7 @@ export class OutSocketFactoryService extends GenericSocketFactory {
                 this.settingsService,
             );
 
-            socket.setParent(this.focusedItem as Generic<any>);
+            socket.setParent(this.focusedItem as GenericGate<any>);
 
             return socket;
         }
