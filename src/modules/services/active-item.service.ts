@@ -45,6 +45,12 @@ export class ActiveItemService {
         });
     }
 
+    public setFocusedItem(item: Activable) {
+        this.settingsService.updateSettings({
+            focusedItem: item,
+        });
+    }
+
     public moveCurrentItem(point: Point) {
         this.current.move(point);
     }

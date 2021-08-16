@@ -39,7 +39,7 @@ export class GateFactoryService {
             this.settingsService,
         );
 
-        this.activeItemService.setCurrentItem(result);
+        this.activeItemService.setFocusedItem(result);
 
         return result;
     }
